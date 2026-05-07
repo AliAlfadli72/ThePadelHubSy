@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Tajawal:wght@200;300;400;500;700;800;900&family=Archivo+Black&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+:root {
+  /* Brand */
+  --primary: 223, 255, 0;
+
+  /* Premium dark navy */
+  --background: 15, 23, 42;
+
+  /* Optional surface colors */
+  --surface: 255, 255, 255;
+  --surface-dark: 255, 255, 255;
+}
+
+  body {
+    margin: 0;
+    background-color: rgb(var(--background));
+    color: white;
+    /* Using recommended Tajawal for Arabic and Montserrat for English */
+    font-family: 'Montserrat', 'Tajawal', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Specific style for heavy headings mentioned in the profile */
+  h1, h2, h3, .font-heading {
+    font-family: 'Archivo Black', 'Tajawal', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+  /* Creating the "Action Shot" high-contrast vibe */
+  .padel-gradient-overlay {
+    @apply absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent;
+  }
+
+  .btn-primary {
+    @apply bg-[#DFFF00] text-black px-8 py-4 rounded-full font-black 
+           hover:scale-105 transition-transform duration-300 uppercase tracking-tighter;
+  }
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+/* Custom selection color to match brand */
+::selection {
+  background: rgba(var(--primary), 0.3);
+  color: white;
+}
