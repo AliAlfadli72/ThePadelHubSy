@@ -1,257 +1,315 @@
-import { motion } from "framer-motion";
-import {
-  FaPhoneAlt,
-  FaInstagram,
-  FaMapMarkerAlt,
-  FaEnvelope,
-} from "react-icons/fa";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Phone, MapPin, Mail, Send, AlertCircle, CheckCircle, Zap } from "lucide-react";
+import { FaInstagram as Instagram } from "react-icons/fa";
 
 function Contact({ isArabic }) {
-  const contactInfo = [
-    {
-      icon: <FaPhoneAlt />,
-      title: isArabic ? "رقم الهاتف" : "Phone Number",
-      value: "+963 980 130 222",
-    },
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: ""
+  });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSent, setIsSent] = useState(false);
 
-    {
-      icon: <FaInstagram />,
-      title: isArabic ? "إنستغرام" : "Instagram",
-      value: "@thepadelhub.sy",
-    },
+  useEffect(() => {
+    document.title = isArabic 
+      ? "اتصل بنا | ذا بادل هب طرطوس" 
+      : "Contact Us | The Padel Hub Tartous";
+    
+    const metaDesc = document.querySelector('meta[name="description"]');
+    const descText = isArabic 
+      ? "اتصل بذا بادل هب سوريا. احصل على أرقام هواتف الحجز الفوري وموقعنا الجغرافي بفندق جونادا بطرطوس."
+      : "Get in touch with The Padel Hub Syria. Find reservation phone numbers and our geographic coordinates inside Hotel Junada, Tartous.";
+    if (metaDesc) {
+      metaDesc.setAttribute("content", descText);
+    }
+  }, [isArabic]);
 
-    {
-      icon: <FaMapMarkerAlt />,
-      title: isArabic ? "الموقع" : "Location",
-      value: isArabic
-        ? "فندق جونادا - طرطوس - سوريا"
-        : "Hotel Junada - Tartous - Syria",
-    },
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: "" }));
+    }
+  };
 
-    {
-      icon: <FaEnvelope />,
-      title: isArabic ? "البريد الإلكتروني" : "Email",
-      value: "info@thepadelhub.sy",
-    },
-  ];
+  const validate = () => {
+    let tempErrors = {};
+    if (!formData.name.trim()) tempErrors.name = isArabic ? "الاسم الكامل مطلوب" : "Full name is required";
+    if (!formData.message.trim()) tempErrors.message = isArabic ? "محتوى الرسالة مطلوب" : "Message content is required";
+    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      tempErrors.email = isArabic ? "البريد الإلكتروني غير صالح" : "Invalid email address";
+    }
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    setIsSubmitting(true);
+    // Simulate contact form dispatch
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsSent(true);
+      setFormData({ name: "", email: "", subject: "", message: "" });
+    }, 1500);
+  };
 
   return (
-    <div className="overflow-hidden">
+    <div className="bg-[#FFFFFF] text-[#2C3E50] min-h-screen pt-[88px] md:pt-[100px] pb-24">
+      
       {/* HERO */}
-      <section className="relative py-32 border-b border-white/10">
-        {/* BG */}
-        <div className="absolute inset-0">
-          <img
-            src="https://images.unsplash.com/photo-1526232761682-d26e03ac148e?q=80&w=2070&auto=format&fit=crop"
-            alt="Contact"
-            className="w-full h-full object-cover opacity-20"
-          />
-
-          <div className="absolute inset-0 bg-black/80" />
-        </div>
-
-        {/* CONTENT */}
-        <div className="relative z-10 max-w-7xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="max-w-4xl"
-          >
-            <p className="uppercase tracking-[5px] text-primary mb-5">
-              {isArabic ? "تواصل معنا" : "Get In Touch"}
-            </p>
-
-            <h1 className="text-5xl md:text-7xl font-black leading-tight mb-8">
-              {isArabic ? (
-                <>
-                  دعنا
-                  <span className="text-primary"> نتحدث </span>
-                </>
-              ) : (
-                <>
-                  Let's
-                  <span className="text-primary"> Connect </span>
-                </>
-              )}
-            </h1>
-
-            <p className="text-white/70 text-lg leading-8 max-w-3xl">
-              {isArabic
-                ? "نحن هنا للإجابة على جميع استفساراتك ومساعدتك في حجز أفضل تجربة بادل في سوريا."
-                : "We are here to answer all your questions and help you book the best padel experience in Syria."}
-            </p>
-          </motion.div>
+      <section className="relative py-16 border-b border-dark/10 bg-slate-50">
+        <div className="absolute top-0 right-1/4 w-[300px] h-[150px] bg-primary/10 blur-[100px] pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <p className="uppercase tracking-[5px] text-[#2C3E50] font-black text-xs md:text-sm mb-4 bg-primary/30 px-3 py-1 rounded inline-block shadow-sm">
+            {isArabic ? "اتصل بنا" : "GET IN TOUCH"}
+          </p>
+          <h1 className="text-4xl md:text-6xl font-black italic uppercase leading-none text-stroke-dark">
+            {isArabic ? (
+              <>تواصل مع <span className="text-[#2C3E50] bg-primary px-3 py-0.5 rounded shadow-neon text-stroke-none">إدارة</span> الهب</>
+            ) : (
+              <>CONNECT WITH <span className="text-[#2C3E50] bg-primary px-3 py-0.5 rounded shadow-neon text-stroke-none">THE HUB</span></>
+            )}
+          </h1>
+          <p className="text-[#2C3E50]/70 text-sm md:text-base mt-4 max-w-2xl font-semibold">
+            {isArabic 
+              ? "هل لديك استفسار عن الاشتراكات، تدريبات الأكاديمية أو تنظيم البطولات؟ تواصل معنا فوراً وسيقوم فريقنا بمساعدتك."
+              : "Have queries about memberships, corporate events, or professional academy programs? Message us directly."}
+          </p>
         </div>
       </section>
 
-      {/* CONTACT SECTION */}
-      <section className="py-28">
-        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-start">
-          {/* LEFT SIDE */}
-          <motion.div
-            initial={{ opacity: 0, x: -60 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7 }}
-            viewport={{ once: true }}
-          >
-            <p className="uppercase tracking-[5px] text-primary mb-5">
-              {isArabic ? "معلومات التواصل" : "Contact Information"}
-            </p>
-
-            <h2 className="text-4xl md:text-6xl font-black leading-tight mb-8">
-              {isArabic
-                ? "تواصل معنا بسهولة"
-                : "Reach Us Easily"}
-            </h2>
-
-            <p className="text-white/70 leading-8 mb-12">
-              {isArabic
-                ? "يمكنك التواصل معنا عبر الهاتف أو وسائل التواصل الاجتماعي أو زيارة موقعنا مباشرة."
-                : "Contact us through phone, social media, or visit our location directly."}
-            </p>
-
-            {/* INFO CARDS */}
-            <div className="space-y-6">
-              {contactInfo.map((item, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="flex items-center gap-5 bg-white/5 border border-white/10 rounded-3xl p-6 hover:border-primary/40 duration-300"
-                >
-                  <div className="w-16 h-16 rounded-2xl bg-primary text-black flex items-center justify-center text-2xl">
-                    {item.icon}
-                  </div>
-
-                  <div>
-                    <h3 className="text-xl font-bold mb-1">
-                      {item.title}
-                    </h3>
-
-                    <p className="text-white/70">
-                      {item.value}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* RIGHT SIDE */}
-          <motion.div
-            initial={{ opacity: 0, x: 60 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7 }}
-            viewport={{ once: true }}
-            className="bg-white/5 border border-white/10 rounded-[40px] p-8 md:p-10"
-          >
-            <h3 className="text-3xl font-black mb-8">
-              {isArabic ? "أرسل رسالة" : "Send a Message"}
+      {/* CONTACT INFO & FORM SECTION (Asymmetric split) */}
+      <section className="py-16 max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          
+          {/* LEFT: CONTACT FORM (60% width equivalent) */}
+          <div className="lg:col-span-7 bg-[#FFFFFF] border border-dark/15 rounded-[35px] p-6 md:p-10 shadow-glass relative overflow-hidden">
+            
+            <h3 className="text-2xl font-black italic uppercase mb-6 flex items-center gap-2 text-[#2C3E50]">
+              <span>{isArabic ? "أرسل رسالة إلكترونية" : "Send Email Query"}</span>
             </h3>
 
-            <div className="space-y-6">
-              {/* NAME */}
+            <AnimatePresence>
+              {isSent && (
+                <motion.div 
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="bg-primary/20 border border-primary/50 text-[#2C3E50] rounded-2xl p-5 flex items-start gap-3 mb-6 shadow-sm"
+                >
+                  <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-primary-dark" />
+                  <div>
+                    <h4 className="font-black text-sm">{isArabic ? "تم إرسال رسالتك بنجاح!" : "Message Sent Successfully!"}</h4>
+                    <p className="text-xs text-[#2C3E50]/70 mt-1 font-semibold">
+                      {isArabic 
+                        ? "شكراً لتواصلك. سنقوم بالرد على استفسارك في أقرب وقت ممكن عبر بريدك الإلكتروني." 
+                        : "Thank you for reaching out. Our administration team will review your ticket and reply shortly."}
+                    </p>
+                  </div>
+                  <button onClick={() => setIsSent(false)} className="text-xs font-black uppercase text-[#2C3E50]/50 hover:text-[#2C3E50] ml-auto">
+                    {isArabic ? "إغلاق" : "Dismiss"}
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <form onSubmit={handleSubmit} className="space-y-5">
+              
+              {/* Full Name */}
               <div>
-                <label className="block mb-3 text-white/70">
+                <label className="block text-xs text-[#2C3E50]/70 font-bold uppercase tracking-wider mb-2">
                   {isArabic ? "الاسم الكامل" : "Full Name"}
                 </label>
-
                 <input
                   type="text"
-                  placeholder={
-                    isArabic
-                      ? "أدخل اسمك الكامل"
-                      : "Enter your full name"
-                  }
-                  className="w-full bg-black border border-white/10 p-4 rounded-2xl outline-none focus:border-primary duration-300"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder={isArabic ? "أدخل اسمك الكامل" : "Enter your full name"}
+                  className="w-full bg-slate-50 border border-dark/10 rounded-xl px-4 py-3.5 text-[#2C3E50] placeholder-dark/30 outline-none focus:border-primary focus:bg-white transition-all text-sm font-semibold"
                 />
+                {errors.name && (
+                  <p className="text-red-500 text-xs mt-1.5 flex items-center gap-1 font-bold">
+                    <AlertCircle className="w-3.5 h-3.5" />
+                    <span>{errors.name}</span>
+                  </p>
+                )}
               </div>
 
-              {/* EMAIL */}
+              {/* Email */}
               <div>
-                <label className="block mb-3 text-white/70">
-                  {isArabic ? "البريد الإلكتروني" : "Email"}
+                <label className="block text-xs text-[#2C3E50]/70 font-bold uppercase tracking-wider mb-2">
+                  {isArabic ? "البريد الإلكتروني" : "Email Address"}
                 </label>
-
                 <input
                   type="email"
-                  placeholder={
-                    isArabic
-                      ? "أدخل بريدك الإلكتروني"
-                      : "Enter your email"
-                  }
-                  className="w-full bg-black border border-white/10 p-4 rounded-2xl outline-none focus:border-primary duration-300"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="name@example.com"
+                  className="w-full bg-slate-50 border border-dark/10 rounded-xl px-4 py-3.5 text-[#2C3E50] placeholder-dark/30 outline-none focus:border-primary focus:bg-white transition-all text-sm font-semibold"
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-xs mt-1.5 flex items-center gap-1 font-bold">
+                    <AlertCircle className="w-3.5 h-3.5" />
+                    <span>{errors.email}</span>
+                  </p>
+                )}
               </div>
 
-              {/* SUBJECT */}
+              {/* Subject */}
               <div>
-                <label className="block mb-3 text-white/70">
+                <label className="block text-xs text-[#2C3E50]/70 font-bold uppercase tracking-wider mb-2">
                   {isArabic ? "الموضوع" : "Subject"}
                 </label>
-
                 <input
                   type="text"
-                  placeholder={
-                    isArabic
-                      ? "أدخل الموضوع"
-                      : "Enter subject"
-                  }
-                  className="w-full bg-black border border-white/10 p-4 rounded-2xl outline-none focus:border-primary duration-300"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  placeholder={isArabic ? "ما هو موضوع رسالتك؟" : "What is this query about?"}
+                  className="w-full bg-slate-50 border border-dark/10 rounded-xl px-4 py-3.5 text-[#2C3E50] placeholder-dark/30 outline-none focus:border-primary focus:bg-white transition-all text-sm font-semibold"
                 />
               </div>
 
-              {/* MESSAGE */}
+              {/* Message */}
               <div>
-                <label className="block mb-3 text-white/70">
-                  {isArabic ? "الرسالة" : "Message"}
+                <label className="block text-xs text-[#2C3E50]/70 font-bold uppercase tracking-wider mb-2">
+                  {isArabic ? "الرسالة" : "Your Message"}
                 </label>
-
                 <textarea
-                  rows="6"
-                  placeholder={
-                    isArabic
-                      ? "اكتب رسالتك هنا..."
-                      : "Write your message here..."
-                  }
-                  className="w-full bg-black border border-white/10 p-4 rounded-2xl outline-none focus:border-primary duration-300 resize-none"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  rows="5"
+                  placeholder={isArabic ? "اكتب استفسارك بالتفصيل هنا..." : "Explain your request in detail..."}
+                  className="w-full bg-slate-50 border border-dark/10 rounded-xl px-4 py-3.5 text-[#2C3E50] placeholder-dark/30 outline-none focus:border-primary focus:bg-white transition-all text-sm resize-none font-semibold"
                 />
+                {errors.message && (
+                  <p className="text-red-500 text-xs mt-1.5 flex items-center gap-1 font-bold">
+                    <AlertCircle className="w-3.5 h-3.5" />
+                    <span>{errors.message}</span>
+                  </p>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full btn-primary py-4 text-sm font-black flex items-center justify-center gap-2"
+              >
+                {isSubmitting ? (
+                  <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <>
+                    <span>{isArabic ? "إرسال الاستفسار" : "Dispatch Message"}</span>
+                    <Send className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+
+            </form>
+          </div>
+
+          {/* RIGHT: CONTACT INFORMATION CARDS (40% width equivalent) */}
+          <div className="lg:col-span-5 space-y-6">
+            
+            {/* Phone Card */}
+            <div className="bg-[#FFFFFF] border border-dark/10 rounded-2xl p-6 flex items-start gap-4 hover:border-primary transition-all duration-300 shadow-glass">
+              <div className="w-12 h-12 rounded-xl bg-primary/20 border border-primary/40 text-primary-dark flex items-center justify-center flex-shrink-0">
+                <Phone className="w-6 h-6" />
+              </div>
+              <div>
+                <h4 className="font-bold text-xs uppercase text-[#2C3E50]/50">{isArabic ? "رقم الهاتف والحجز" : "RESERVATION PHONE"}</h4>
+                <a href="tel:+963980130222" className="block text-lg font-black italic mt-1 text-[#2C3E50] hover:text-[#2C3E50]/80 transition-colors">
+                  {isArabic ? "٠٩٨٠١٣٠٢٢٢" : "+963 980 130 222"}
+                </a>
+                <p className="text-[#2C3E50]/55 text-[10px] mt-1 font-bold">
+                  {isArabic ? "اتصال أو واتساب للحجز الفوري والتأكيد" : "WhatsApp or call for priority verification"}
+                </p>
               </div>
             </div>
 
-            {/* BUTTON */}
-            <button className="w-full mt-8 bg-primary text-black py-5 rounded-2xl font-black text-lg hover:scale-[1.02] duration-300">
-              {isArabic ? "إرسال الرسالة" : "Send Message"}
-            </button>
-          </motion.div>
+            {/* Email Card */}
+            <div className="bg-[#FFFFFF] border border-dark/10 rounded-2xl p-6 flex items-start gap-4 hover:border-primary transition-all duration-300 shadow-glass">
+              <div className="w-12 h-12 rounded-xl bg-primary/20 border border-primary/40 text-primary-dark flex items-center justify-center flex-shrink-0">
+                <Mail className="w-6 h-6" />
+              </div>
+              <div>
+                <h4 className="font-bold text-xs uppercase text-[#2C3E50]/50">{isArabic ? "البريد الإلكتروني للإدارة" : "ADMIN SUPPORT EMAIL"}</h4>
+                <a href="mailto:info@thepadelhub.sy" className="block text-lg font-black italic mt-1 text-[#2C3E50] hover:text-[#2C3E50]/80 transition-colors">
+                  info@thepadelhub.sy
+                </a>
+              </div>
+            </div>
+
+            {/* Address Card */}
+            <div className="bg-[#FFFFFF] border border-dark/10 rounded-2xl p-6 flex items-start gap-4 hover:border-primary transition-all duration-300 shadow-glass">
+              <div className="w-12 h-12 rounded-xl bg-primary/20 border border-primary/40 text-primary-dark flex items-center justify-center flex-shrink-0">
+                <MapPin className="w-6 h-6" />
+              </div>
+              <div>
+                <h4 className="font-bold text-xs uppercase text-[#2C3E50]/50">{isArabic ? "الموقع الجغرافي" : "FACILITY LOCATION"}</h4>
+                <span className="block text-base font-black italic mt-1 text-[#2C3E50]">
+                  {isArabic ? "فندق جونادا، طرطوس، سوريا" : "Hotel Junada, Tartous, Syria"}
+                </span>
+              </div>
+            </div>
+
+            {/* Instagram Card */}
+            <div className="bg-[#FFFFFF] border border-dark/10 rounded-2xl p-6 flex items-start gap-4 hover:border-primary transition-all duration-300 shadow-glass">
+              <div className="w-12 h-12 rounded-xl bg-primary/20 border border-primary/40 text-primary-dark flex items-center justify-center flex-shrink-0">
+                <Instagram className="w-6 h-6" />
+              </div>
+              <div>
+                <h4 className="font-bold text-xs uppercase text-[#2C3E50]/50">{isArabic ? "إنستغرام النادي" : "OFFICIAL INSTAGRAM"}</h4>
+                <a href="https://instagram.com/thepadelhub.sy" target="_blank" rel="noopener noreferrer" className="block text-lg font-black italic mt-1 text-[#2C3E50] hover:text-[#2C3E50]/80 transition-colors">
+                  @thepadelhub.sy
+                </a>
+              </div>
+            </div>
+
+            {/* Solar backup powered notice */}
+            <div className="border border-primary bg-primary/10 rounded-[24px] p-6 text-center space-y-2 shadow-sm">
+              <Zap className="w-8 h-8 text-primary-dark mx-auto animate-pulse" />
+              <h4 className="text-sm font-black italic text-[#2C3E50] uppercase">{isArabic ? "جاهزون للاتصال واللعب 24/7" : "Always Powered 24/7"}</h4>
+              <p className="text-[#2C3E50]/70 text-xs font-semibold">
+                {isArabic 
+                  ? "شبكة الطاقة الشمسية تضمن استمرارية خدمات الإدارة والرد على الحجوزات طوال اليوم دون توقف." 
+                  : "Solar backup arrays power our operations room and checkout terminals around the clock."}
+              </p>
+            </div>
+
+          </div>
+
         </div>
       </section>
 
-      {/* MAP SECTION */}
-      <section className="pb-28">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            viewport={{ once: true }}
-            className="rounded-[40px] overflow-hidden border border-white/10"
-          >
-            <iframe
-              title="Padel Hub Location"
-              src="https://www.google.com/maps/embed?pb=!1m18"
-              width="100%"
-              height="500"
-              allowFullScreen=""
-              loading="lazy"
-              className="w-full"
-            />
-          </motion.div>
+      {/* LOCALIZED GOOGLE MAPS EMBED */}
+      <section className="max-w-7xl mx-auto px-6 pt-10">
+        <div className="rounded-[35px] overflow-hidden border border-dark/15 shadow-glass relative aspect-[21/9] min-h-[300px]">
+          <iframe
+            title="Padel Hub Location at Hotel Junada"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3278.431057404561!2d35.8798!3d34.9081!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15217983636f4521%3A0xe5c4a52ff37c7689!2sJunada%20Hotel!5e0!3m2!1sen!2ssy!4v1716752000000!5m2!1sen!2ssy"
+            width="100%"
+            height="100%"
+            style={{ border: 0, filter: "grayscale(0.4) contrast(1.1)" }}
+            allowFullScreen=""
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            className="absolute inset-0 w-full h-full"
+          />
         </div>
       </section>
+
     </div>
   );
 }

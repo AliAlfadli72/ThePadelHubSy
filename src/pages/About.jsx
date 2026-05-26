@@ -1,159 +1,230 @@
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { ShieldCheck, Award, Zap, Compass, Users } from "lucide-react";
+
+import courtImg from "../assets/panoramic_court_light.png";
+import smashImg from "../assets/padel_smash_light.png";
+import racketImg from "../assets/padel_racket_light.png";
 
 function About({ isArabic }) {
+  useEffect(() => {
+    document.title = isArabic 
+      ? "قصتنا وهويتنا | ذا بادل هب طرطوس" 
+      : "Our Story & Identity | The Padel Hub Tartous";
+    
+    const metaDesc = document.querySelector('meta[name="description"]');
+    const descText = isArabic 
+      ? "تعرف على رؤية ذا بادل هب طرطوس في إدخال رياضة البادل بمعايير دولية وكهرباء شمسية 24/7 إلى الساحل السوري."
+      : "Learn about The Padel Hub Tartous and its vision of bringing international padel standards and 24/7 solar backup power to Syria.";
+    if (metaDesc) {
+      metaDesc.setAttribute("content", descText);
+    }
+  }, [isArabic]);
+
+  // Specifications list
+  const specs = [
+    {
+      titleAr: "عشب سوبر كورت الإسباني",
+      titleEn: "Spanish Supercourt Turf",
+      descAr: "عشب نسيجي معتمد دولياً من الاتحاد الدولي للبادل يضمن ارتداداً متناسقاً وثباتاً ممتازاً للقدمين.",
+      specsEn: "Certified WPT textured turf for consistent ball rebound, joint safety, and premium slip resistance."
+    },
+    {
+      titleAr: "هياكل زجاجية بانورامية 12 مم",
+      titleEn: "12mm Tempered Panoramic Glass",
+      descAr: "ألواح زجاجية مقساة بسمك 12 مم مدعمة بهياكل فولاذية لتحمل الرياح الساحلية الشديدة وتوفير رؤية مشاهدة خالية من العوائق.",
+      specsEn: "Heavy-duty 12mm glass panels engineered to absorb impacts and withstand coastal wind velocities without anchors."
+    },
+    {
+      titleAr: "بنية هجينة للطاقة الشمسية 24/7",
+      titleEn: "24/7 Hybrid Solar Grid",
+      descAr: "نظام طاقة بديل متكامل يضمن استمرارية الإضاءة الاحترافية وتكييف الهواء وغرف الملابس طوال اليوم دون انقطاع.",
+      specsEn: "Custom solar array securing seamless illumination, chilled lockers, and lobby cafe operations during outages."
+    },
+    {
+      titleAr: "فولاذ مقاوم للتآكل والرطوبة",
+      titleEn: "Anti-Corrosive Galvanized Steel",
+      descAr: "هياكل حديدية معالجة ضد الرطوبة الساحلية والصدأ لضمان سلامة اللاعبين وعمر افتراضي طويل للمنشأة.",
+      specsEn: "Double-galvanized frame coatings preventing rust and weathering under high coastal humidity."
+    }
+  ];
+
   return (
-    <div className="overflow-hidden bg-black text-white">
-      {/* HERO - Content from "Who We Are" */}
-      <section className="relative py-40 border-b border-white/10">
-        <div className="absolute inset-0">
-          <img
-            src="https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=2070&auto=format&fit=crop"
-            alt="Padel Court Syria"
-            className="w-full h-full object-cover opacity-30 grayscale"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black to-black" />
-        </div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="max-w-4xl"
-          >
-            <p className="uppercase tracking-[5px] text-primary mb-6 font-bold">
-              {isArabic ? "القصة والهوية" : "Story & Identity"}
-            </p>
-
-            <h1 className="text-5xl md:text-8xl font-black leading-none mb-8 italic uppercase">
-              {isArabic ? (
-                <>النبض الجديد <span className="text-primary block">للرياضة</span></>
-              ) : (
-                <>The New <span className="text-primary">Pulse</span> of Sport</>
-              )}
-            </h1>
-
-            <p className="text-gray-300 text-xl leading-relaxed max-w-3xl font-light">
-              {isArabic
-                ? "نحن النبض الجديد للرياضة في قلب طرطوس. ذا بادل هب ليس مجرد ملعب رياضي بل هو مجتمع عصري تأسس ليكون الوجهة الأولى لهواة ومحترفي رياضة البادل في سوريا."
-                : "We are the new pulse of sport in the heart of Tartous. The Padel Hub is not just a sports court; it is a modern community established to be the premier destination for padel enthusiasts and professionals in Syria."}
-            </p>
-          </motion.div>
+    <div className="bg-[#FFFFFF] text-[#2C3E50] min-h-screen pt-[88px] md:pt-[100px] pb-24">
+      
+      {/* HERO */}
+      <section className="relative py-20 border-b border-dark/10 bg-slate-50">
+        <div className="absolute top-0 right-1/4 w-[300px] h-[150px] bg-primary/10 blur-[100px] pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <p className="uppercase tracking-[5px] text-[#2C3E50] font-black text-xs md:text-sm mb-4 bg-primary/30 px-3 py-1 rounded inline-block shadow-sm">
+            {isArabic ? "القصة والهوية" : "STORY & LEGACY"}
+          </p>
+          <h1 className="text-4xl md:text-6xl font-black italic uppercase leading-none text-stroke-dark">
+            {isArabic ? (
+              <>تاريخنا <span className="text-[#2C3E50] bg-primary px-3 py-0.5 rounded shadow-neon text-stroke-none">ورؤيتنا</span> الرياضية</>
+            ) : (
+              <>OUR STORY & <span className="text-[#2C3E50] bg-primary px-3 py-0.5 rounded shadow-neon text-stroke-none">VISION</span></>
+            )}
+          </h1>
+          <p className="text-[#2C3E50]/70 text-sm md:text-base mt-4 max-w-2xl font-semibold">
+            {isArabic 
+              ? "انطلق ذا بادل هب في مايو 2024 ليكون أول ملعب بادل متخصص بمعايير دولية في مدينة طرطوس، حاملاً رؤية لتطوير هذه الرياضة وبناء مجتمع نشيط."
+              : "Launched in May 2024, The Padel Hub entered Syria's sports landscape as the first WPT-grade indoor venue in Tartous, blending active lifestyles with hospitality."}
+          </p>
         </div>
       </section>
 
-      {/* MISSION & VISION - From Page 2 of Profile */}
-      <section className="py-28 bg-zinc-950">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16">
-            <motion.div 
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              className="p-12 bg-white/5 rounded-[40px] border border-white/10 relative overflow-hidden group"
-            >
-               <div className="absolute top-0 right-0 p-8 text-primary/10 text-9xl font-black italic group-hover:text-primary/20 transition-colors">01</div>
-               <h3 className="text-primary tracking-widest uppercase font-bold mb-6">{isArabic ? "الرؤية" : "Vision"}</h3>
-               <p className="text-2xl leading-relaxed font-bold italic uppercase">
-                 {isArabic 
-                   ? "أن نصبح العلامة التجارية الرائدة والمرجعية الأولى لرياضة البادل في سوريا، والمحرك الأساسي لانتشار هذه الرياضة عالمياً على الأرض السورية."
-                   : "To become the leading brand and the primary reference for padel in Syria, and the main driver for the global spread of this sport on Syrian soil."}
-               </p>
-            </motion.div>
-
-            <motion.div 
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              className="p-12 bg-primary rounded-[40px] text-black relative overflow-hidden group"
-            >
-               <div className="absolute top-0 right-0 p-8 text-black/10 text-9xl font-black italic">02</div>
-               <h3 className="tracking-widest uppercase font-bold mb-6 text-black/60">{isArabic ? "الرسالة" : "Mission"}</h3>
-               <p className="text-2xl leading-relaxed font-bold italic uppercase">
-                 {isArabic 
-                   ? "توفير بيئة رياضية احترافية بمعايير دولية، تمنح لاعبينا من مختلف المستويات منصة للتطور والمنافسة، وبناء علاقات اجتماعية قوية."
-                   : "Providing a professional sports environment with international standards, giving our players of all levels a platform for development and competition, and building strong social relationships."}
-               </p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* THE LOCATION HIGHLIGHT - Official Site Location */}
-      <section className="py-28">
-        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            className="relative"
-          >
-            <img
-              src="https://images.unsplash.com/photo-1547347298-4074fc3086f0?q=80&w=1974&auto=format&fit=crop"
-              alt="The Padel Hub Location"
-              className="rounded-[40px] w-full h-[500px] object-cover"
-            />
-            <div className="absolute -bottom-8 -left-8 bg-zinc-900 border border-white/10 p-10 rounded-3xl shadow-2xl">
-              <p className="text-primary font-bold uppercase tracking-widest mb-2">{isArabic ? "الموقع النخبوي" : "Elite Location"}</p>
-              <h4 className="text-3xl font-black italic">{isArabic ? "فندق جونادا، طرطوس" : "Junada Hotel, Tartous"}</h4>
-            </div>
-          </motion.div>
-
-          <div>
-            <h2 className="text-4xl md:text-6xl font-black mb-8 italic uppercase leading-tight">
-              {isArabic ? "تجربة استثنائية تمزج بين الفخامة والحماس" : "An Experience Blending Luxury & Excitement"}
+      {/* STORY & NARRATIVE BLOCK (60/40 Split) */}
+      <section className="py-20 max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+          
+          {/* Narrative: 60% */}
+          <div className="lg:col-span-7 space-y-6">
+            <h2 className="text-3xl md:text-4xl font-black italic uppercase text-[#2C3E50] border-b-2 border-primary pb-2 w-fit">
+              {isArabic ? "الريادة في طرطوس: كيف بدأنا؟" : "First Mover: Bringing the Vibe to Tartous"}
             </h2>
-            <p className="text-gray-400 text-lg leading-8 mb-8">
+            <p className="text-[#2C3E50]/70 leading-relaxed text-sm md:text-base font-semibold">
               {isArabic 
-                ? "من موقعنا المتميز في فندق جونادا، نقدم تجربة رياضية استثنائية لننقل مفهوم الرياضة من مجرد نشاط بدني إلى نمط حياة متكامل."
-                : "From our distinguished location at Junada Hotel, we provide an exceptional sports experience to shift the concept of sport from a mere physical activity to an integrated lifestyle."}
+                ? "في ظل الحاجة المتزايدة لمساحات ترفيهية ورياضية راقية تلبي تطلعات الشباب والمحترفين في سوريا، قمنا بتأسيس 'ذا بادل هب' كأول وجهة متكاملة لرياضة البادل تنس في مدينة طرطوس. اخترنا موقعنا بعناية فائقة داخل فندق جونادا الفاخر لنضمن لعملائنا بيئة آمنة، مريحة، وسهلة الوصول."
+                : "Realizing the massive potential for padel tennis in the coastal region, we established 'The Padel Hub' inside Hotel Junada, Tartous. Our mission was simple: eliminate all structural limitations – from electricity outages to coastal weather restrictions – and build a sanctuary where players can hone their skills and gather daily."}
             </p>
-            <div className="flex gap-4">
-               <div className="w-12 h-1 bg-primary mt-3"></div>
-               <p className="text-white font-bold italic">{isArabic ? "مايو 2024 - طرطوس" : "May 2024 - Tartous"}</p>
+            <p className="text-[#2C3E50]/60 leading-relaxed text-sm font-medium">
+              {isArabic 
+                ? "ولأن البنية التحتية هي حجر الأساس، تغلبنا على تحديات الطاقة المحلية بإنشاء أول نظام كهرباء شمسية هجين كامل في المنشأة لضمان استمرارية اللعب تحت الكشافات الليلية القوية وفي الصالات المكيفة. نحن لا نقدم ملعباً فحسب، بل نصنع معياراً جديداً للرياضة السورية."
+                : "By investing in a robust, custom-engineered structural frame and the city's first high-capacity solar grid for a sports facility, we successfully pioneered a 24/7 operational hub. Today, we are proud to foster a growing local player database, hosting seasonal tournaments and certified training clinics."}
+            </p>
+
+            <div className="flex gap-4 pt-4">
+              <div className="text-center bg-slate-50 border border-dark/10 rounded-2xl p-4 min-w-[100px] shadow-sm">
+                <span className="block text-primary-dark font-black text-2xl italic">May</span>
+                <span className="block text-xs font-bold text-[#2C3E50]/50 uppercase mt-1">2024</span>
+              </div>
+              <div className="text-center bg-slate-50 border border-dark/10 rounded-2xl p-4 min-w-[100px] shadow-sm">
+                <span className="block text-primary-dark font-black text-2xl italic">1st</span>
+                <span className="block text-xs font-bold text-[#2C3E50]/50 uppercase mt-1">In Tartous</span>
+              </div>
             </div>
+          </div>
+
+          {/* Visual: 40% */}
+          <div className="lg:col-span-5 relative">
+            <div className="absolute -inset-2 border-2 border-primary rounded-[35px] translate-x-3 translate-y-3 pointer-events-none -skew-x-2" />
+            <div className="relative rounded-[30px] overflow-hidden aspect-[4/5] border border-dark/15 shadow-glass bg-white">
+              <img src={courtImg} className="w-full h-full object-cover transition-all duration-700" alt="About The Padel Hub" />
+              <div className="padel-gradient-overlay" />
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* MISSION & VISION - ASYMMETRIC 60/40 CARDS */}
+      <section className="py-20 bg-slate-50 border-y border-dark/5">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            
+            {/* Mission: 60% width */}
+            <motion.div 
+              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, x: isArabic ? 40 : -40 }}
+              viewport={{ once: true }}
+              className="lg:col-span-7 bg-[#FFFFFF] border border-dark/15 rounded-[35px] p-8 md:p-12 flex flex-col justify-between group shadow-glass"
+            >
+              <div>
+                <div className="flex items-center gap-2 mb-6">
+                  <Compass className="w-8 h-8 text-primary-dark" />
+                  <span className="text-xs font-black uppercase tracking-widest text-[#2C3E50] bg-primary/20 px-2 py-0.5 rounded">{isArabic ? "رسالتنا" : "OUR MISSION"}</span>
+                </div>
+                <h3 className="text-3xl font-black italic uppercase mb-6 leading-tight text-[#2C3E50]">
+                  {isArabic ? "توفير بيئة رياضية بمقاييس عالمية تدفع اللاعبين للتطور والتواصل" : "Establishing Professional Venues for Growth & Connection"}
+                </h3>
+                <p className="text-[#2C3E50]/70 text-sm md:text-base leading-relaxed font-semibold">
+                  {isArabic
+                    ? "تلتزم رسالتنا بنشر وتطوير رياضة البادل في سوريا عبر تقديم منشآت رياضية مطابقة تماماً للمواصفات الدولية، وتوفير برامج تدريبية احترافية معتمدة تدفع اللاعبين بكافة أعمارهم ومستوياتهم للنمو والمنافسة، وخلق صلات اجتماعية وثقافية وثيقة بين أعضاء النادي."
+                    : "To systematically nurture the sport of padel in Syria by offering uncompromising court environments, certified training academies, and local leagues. We focus on bridging high-performance athleticism with premium recreational hospitality, making sports an everyday social routine."}
+                </p>
+              </div>
+              <div className="mt-8 pt-6 border-t border-dark/10 flex items-center gap-3 text-xs text-[#2C3E50]/55 font-bold">
+                <Users className="w-4 h-4 text-primary-dark" />
+                <span>{isArabic ? "تمكين المجتمع الرياضي الساحلي" : "Empowering the Syrian coastal tennis community"}</span>
+              </div>
+            </motion.div>
+
+            {/* Vision: 40% width */}
+            <motion.div 
+              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, x: isArabic ? -40 : 40 }}
+              viewport={{ once: true }}
+              className="lg:col-span-5 bg-[#2C3E50] text-white rounded-[35px] p-8 md:p-12 flex flex-col justify-between shadow-glass border border-dark/10"
+            >
+              <div>
+                <div className="flex items-center gap-2 mb-6">
+                  <Award className="w-8 h-8 text-primary fill-primary" />
+                  <span className="text-xs font-black uppercase tracking-widest text-primary-dark bg-primary px-2.5 py-0.5 rounded">{isArabic ? "رؤيتنا" : "OUR VISION"}</span>
+                </div>
+                <h3 className="text-3xl font-black italic uppercase mb-6 leading-tight text-white">
+                  {isArabic ? "الريادة والمرجعية الأولى للبادل في سوريا" : "The Pioneer & Reference for Padel in Syria"}
+                </h3>
+                <p className="text-white/80 text-sm leading-relaxed font-semibold">
+                  {isArabic
+                    ? "نسعى لأن نصبح العلامة التجارية الأولى والجهة المرجعية الأبرز لرياضة البادل على مستوى سوريا، ومواصلة توسعة وتطوير الملاعب لتمثيل الرياضيين السوريين في المحافل والبطولات الإقليمية والدولية بكفاءة واحترافية."
+                    : "To become the ultimate country-wide brand and benchmark for padel court systems and professional player coaching in Syria. We aim to represent local athletes in international padel tournaments and expand our custom solar court model across key cities."}
+                </p>
+              </div>
+              <div className="mt-8 pt-6 border-t border-white/10 flex items-center gap-3 text-xs text-white/60 font-bold">
+                <Zap className="w-4 h-4 text-primary fill-primary" />
+                <span>{isArabic ? "طاقة متجددة، رؤية مستمرة" : "Renewable Energy, Visionary Future"}</span>
+              </div>
+            </motion.div>
+
           </div>
         </div>
       </section>
 
-      {/* CORE VALUES - Point 4 from Profile (USP) */}
-      <section className="py-24 bg-zinc-950 border-y border-white/5">
+      {/* FACILITIES TECHNICAL SPECS SHEET */}
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-center text-4xl font-black uppercase italic mb-16">{isArabic ? "نقاط القوة" : "Our Strengths"}</h2>
-          <div className="grid md:grid-cols-3 gap-12">
-            {[
-              {
-                title: isArabic ? "الريادة المحلية" : "Local Leadership",
-                desc: isArabic ? "أول ملعب بادل متخصص في مدينة طرطوس." : "The first specialized padel court in the city of Tartous."
-              },
-              {
-                title: isArabic ? "التسويق العصري" : "Modern Marketing",
-                desc: isArabic ? "هوية بصرية قوية وشابة تخاطب جيل الشباب الطموح." : "A strong and youthful visual identity addressing the ambitious younger generation."
-              },
-              {
-                title: isArabic ? "البنية التحتية" : "Infrastructure",
-                desc: isArabic ? "ملاعب مصممة لتحمل الظروف المناخية الساحلية." : "Courts designed to withstand coastal weather conditions."
-              }
-            ].map((usp, i) => (
-              <div key={i} className="text-center">
-                <h4 className="text-primary text-2xl font-black mb-4 uppercase italic italic">{usp.title}</h4>
-                <p className="text-gray-500">{usp.desc}</p>
+          
+          <div className="text-center mb-16 max-w-xl mx-auto">
+            <span className="text-primary-dark font-heading font-black tracking-widest uppercase text-xs bg-primary/20 px-3 py-1 rounded">
+              {isArabic ? "المواصفات الفنية للملاعب" : "TECHNICAL SPECIFICATIONS"}
+            </span>
+            <h2 className="text-4xl font-black italic uppercase leading-none mt-4 text-[#2C3E50]">
+              {isArabic ? "بنية تحتية هندسية احترافية" : "Engineered to Perform"}
+            </h2>
+            <p className="text-[#2C3E50]/70 text-xs md:text-sm mt-3 font-semibold">
+              {isArabic 
+                ? "ملاعبنا مصممة ومبنية بمواد ممتازة وخاضعة لمعايير الاتحاد الدولي للبادل (FIP) لضمان أفضل تجربة أداء."
+                : "Every court installation meets precise International Padel Federation rules for safety, rebound, and playability."}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {specs.map((spec, idx) => (
+              <div 
+                key={idx} 
+                className="bg-slate-50 border border-dark/10 hover:border-primary p-6 md:p-8 rounded-3xl transition-all duration-300 flex items-start gap-4 shadow-sm"
+              >
+                <div className="w-10 h-10 rounded-xl bg-primary text-[#2C3E50] flex items-center justify-center flex-shrink-0 font-black italic shadow-neon">
+                  {idx + 1}
+                </div>
+                <div>
+                  <h4 className="text-lg font-black italic uppercase text-[#2C3E50]">
+                    {isArabic ? spec.titleAr : spec.titleEn}
+                  </h4>
+                  <p className="text-[#2C3E50]/70 text-sm mt-2 leading-relaxed font-semibold">
+                    {isArabic ? spec.descAr : spec.specsEn}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
+
         </div>
       </section>
 
-      {/* FOOTER CTA */}
-      <section className="py-32 bg-black text-center">
-        <h2 className="text-5xl md:text-8xl font-black italic uppercase mb-12">
-          {isArabic ? "ابدأ قصتك معنا" : "Start Your Story With Us"}
-        </h2>
-        <Link 
-          to="/booking" 
-          className="bg-primary text-black px-16 py-6 rounded-full font-black text-xl uppercase hover:scale-110 transition-transform duration-300 inline-block"
-        >
-          {isArabic ? "احجز ملعبك" : "Book Your Court"}
-        </Link>
-      </section>
     </div>
   );
 }

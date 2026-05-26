@@ -1,58 +1,100 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Tajawal:wght@200;300;400;500;700;800;900&family=Archivo+Black&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Tajawal:wght@200;300;400;500;700;800;900&family=Cairo:wght@200..1000&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-:root {
-  /* Brand */
-  --primary: 223, 255, 0;
+  :root {
+    /* Brand - #CCFF00 (204, 255, 0) */
+    --primary: 204, 255, 0;
 
-  /* Premium dark navy */
-  --background: 15, 23, 42;
+    /* Pure White Background */
+    --background: 255, 255, 255;
 
-  /* Optional surface colors */
-  --surface: 255, 255, 255;
-  --surface-dark: 255, 255, 255;
-}
+    /* Cool Dark Gray - #2C3E50 (44, 62, 80) */
+    --dark: 44, 62, 80;
+  }
 
   body {
     margin: 0;
     background-color: rgb(var(--background));
-    color: white;
-    /* Using recommended Tajawal for Arabic and Montserrat for English */
-    font-family: 'Montserrat', 'Tajawal', sans-serif;
+    color: rgb(var(--dark));
+    font-family: 'Montserrat', 'Tajawal', 'Cairo', sans-serif;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
 
-  /* Specific style for heavy headings mentioned in the profile */
+  /* Cairo Black Slanted headers */
   h1, h2, h3, .font-heading {
-    font-family: 'Archivo Black', 'Tajawal', sans-serif;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 900;
+    font-style: italic;
     text-transform: uppercase;
     letter-spacing: -0.02em;
   }
 }
 
 @layer components {
-  /* Creating the "Action Shot" high-contrast vibe */
   .padel-gradient-overlay {
-    @apply absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent;
+    @apply absolute inset-0 bg-gradient-to-t from-white via-white/10 to-transparent;
   }
 
   .btn-primary {
-    @apply bg-[#DFFF00] text-black px-8 py-4 rounded-full font-black 
-           hover:scale-105 transition-transform duration-300 uppercase tracking-tighter;
+    @apply bg-[#2C3E50] text-white px-8 py-4 rounded-xl font-black 
+           hover:bg-primary hover:text-[#2C3E50] hover:scale-[1.04] active:scale-[0.98] 
+           transition-all duration-300 uppercase tracking-tight border border-[#2C3E50] hover:border-primary shadow-md;
   }
+
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-md border border-white/40 shadow-sm;
+    box-shadow: 0 8px 32px 0 rgba(44, 62, 80, 0.06);
+  }
+
+  .text-stroke-neon {
+    -webkit-text-stroke: 1px #CCFF00;
+    color: transparent;
+  }
+
+  .text-stroke-dark {
+    -webkit-text-stroke: 1px rgba(44, 62, 80, 0.15);
+    color: transparent;
+  }
+
+  .skew-clip {
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+  }
+
+  .skew-clip-reverse {
+    clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+  }
+}
+
+/* Custom premium scrollbar - Whitemode */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FFFFFF;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #E2E8F0;
+  border-radius: 4px;
+  border: 2px solid #FFFFFF;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #CCFF00;
 }
 
 * {
   scroll-behavior: smooth;
 }
 
-/* Custom selection color to match brand */
 ::selection {
   background: rgba(var(--primary), 0.3);
-  color: white;
+  color: rgb(var(--dark));
 }

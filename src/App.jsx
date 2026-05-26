@@ -23,8 +23,8 @@ function App() {
   }, [isArabic]);
 
   return (
-<div className="min-h-screen bg-[#111827] text-white">
-        <Header
+    <div className="min-h-screen bg-white text-[#2C3E50]">
+      <Header
         isArabic={isArabic}
         setIsArabic={setIsArabic}
       />
